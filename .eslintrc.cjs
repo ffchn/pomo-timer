@@ -5,7 +5,8 @@ module.exports = {
     },
     "extends": [
         "standard-with-typescript",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "@rocketseat/eslint-config/next"
     ],
     "overrides": [
         {
@@ -28,5 +29,7 @@ module.exports = {
         "react"
     ],
     "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-uses-react": "off",
     }
 }
