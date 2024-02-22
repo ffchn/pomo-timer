@@ -1,9 +1,9 @@
-import { ButtonVariant, ButtonWrapper } from "./Button.styles";
+import { type ButtonVariant, ButtonWrapper } from './Button.styles'
 
 interface ButtonProps {
-  variant?: ButtonVariant;
+  variant?: ButtonVariant
 }
 
-export function Button({ variant = "primary" }: ButtonProps) {
-  return <ButtonWrapper variant={variant}>Submit</ButtonWrapper>;
+export function Button ({ variant = 'primary' }: ButtonProps) {
+  return <ButtonWrapper variant={variant}>Submit</ButtonWrapper>
 }

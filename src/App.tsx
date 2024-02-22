@@ -1,9 +1,9 @@
-import { Button } from "./components/Button";
-import { ThemeProvider } from "styled-components";
-import { defaultTheme } from "./styles/themes/default";
-import { GlobalStyles } from "./styles/global";
+import { Button } from './components/Button'
+import { ThemeProvider } from 'styled-components'
+import { defaultTheme } from './styles/themes/default'
+import { GlobalStyles } from './styles/global'
 
-export default function App() {
+export default function App () {
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
@@ -16,5 +16,5 @@ export default function App() {
         <GlobalStyles />
       </ThemeProvider>
     </>
-  );
+  )
 }
