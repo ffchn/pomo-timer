@@ -1,15 +1,30 @@
 import { Play } from 'phosphor-react'
-import { HomeWrapper, FormContainer, TimerContainer } from './styles'
+import {
+  HomeWrapper,
+  FormContainer,
+  TimerContainer,
+  TaskDescriptionInput,
+  TimerDurationInput,
+} from './styles'
+import { Button } from '../Button'
 
 export default function Home() {
   return (
     <HomeWrapper>
       <form action="">
         <FormContainer>
-          <label htmlFor="task">I will be workin in</label>
-          <input type="text" id="task" />
+          <label htmlFor="task">I will be working in</label>
+          <TaskDescriptionInput
+            type="text"
+            id="task"
+            placeholder="fixing bugs"
+          />
           <label htmlFor="timeAmountInMins">for</label>
-          <input type="number" id="timeAmountInMins" />
+          <TimerDurationInput
+            type="number"
+            id="timeAmountInMins"
+            placeholder="60"
+          />
           <span>minutes</span>
         </FormContainer>
 
@@ -21,9 +36,9 @@ export default function Home() {
           <span>0</span>
         </TimerContainer>
 
-        <button type="submit">
+        <Button type="submit">
           <Play size={24} /> Start
-        </button>
+        </Button>
       </form>
     </HomeWrapper>
   )
