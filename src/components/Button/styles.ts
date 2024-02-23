@@ -14,17 +14,17 @@ export const ButtonWrapper = styled.button`
   font-weight: bold;
   cursor: pointer;
 
-  background: ${(props) => props.theme['green-500']};
-  color: ${(props) => props.theme['gray-100']};
+  background: ${({ theme }) => theme['green-500']};
+  color: ${({ theme }) => theme['gray-100']};
   transition: 0.5s ease;
 
   &:not(:disabled):hover {
-    background: ${(props) => props.theme['green-700']};
+    background: ${({ theme }) => theme['green-700']};
   }
 
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
-    background-color: ${(props) => props.theme['gray-600']};
+    background-color: ${({ theme }) => theme['gray-600']};
   }
 `

@@ -9,6 +9,7 @@ export const HeaderWrapper = styled.header`
   .logo {
     color: white;
     text-decoration: none;
+    font-family: 'Roboto mono', monospace;
   }
 
   nav {
@@ -22,16 +23,16 @@ export const HeaderWrapper = styled.header`
       display: flex;
       justify-content: center;
       align-items: center;
-      color: ${(props) => props.theme['gray-100']};
+      color: ${({ theme }) => theme['gray-100']};
       transition: 0.5s;
       border-bottom: 3px solid transparent;
 
       &.active {
-        border-color: ${(props) => props.theme['green-500']};
+        border-color: ${({ theme }) => theme['green-500']};
       }
 
       &:hover {
-        background-color: ${(props) => props.theme['green-500']};
+        background-color: ${({ theme }) => theme['green-500']};
       }
     }
   }

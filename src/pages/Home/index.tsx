@@ -6,7 +6,7 @@ import {
   TaskDescriptionInput,
   TimerDurationInput,
 } from './styles'
-import { Button } from '../Button'
+import { Button } from '../../components/Button'
 
 export default function Home() {
   return (
@@ -17,13 +17,24 @@ export default function Home() {
           <TaskDescriptionInput
             type="text"
             id="task"
+            list="task-suggestions"
             placeholder="fixing bugs"
           />
+
+          <datalist id="task-suggestions">
+            <option value="Build components" />
+            <option value="Fix Bugs" />
+            <option value="Documentation" />
+          </datalist>
+
           <label htmlFor="timeAmountInMins">for</label>
           <TimerDurationInput
             type="number"
             id="timeAmountInMins"
-            placeholder="60"
+            step="5"
+            placeholder="00"
+            min={5}
+            max={60}
           />
           <span>minutes</span>
         </FormContainer>
