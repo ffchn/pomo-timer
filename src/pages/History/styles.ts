@@ -59,3 +59,27 @@ export const TaskListWrapper = styled.div`
     }
   }
 `
+
+const STATUS_COLORS = {
+  finished: 'green-500',
+  paused: 'yellow-500',
+  cancelled: 'red-500',
+} as const
+
+interface StatusProps {
+  status: keyof typeof STATUS_COLORS
+}
+
+export const Status = styled.span<StatusProps>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 100%;
+    background-color: ${(props) => props.theme[STATUS_COLORS[props.status]]};
+  }
+`

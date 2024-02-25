@@ -1,4 +1,4 @@
-import { HistoryPageWrapper, TaskListWrapper } from './styles'
+import { HistoryPageWrapper, Status, TaskListWrapper } from './styles'
 
 export default function History() {
   return (
@@ -20,31 +20,41 @@ export default function History() {
               <td>Task</td>
               <td>60 mins</td>
               <td>2 months ago</td>
-              <td>Finished</td>
+              <td>
+                <Status status="finished"> Finished</Status>
+              </td>
             </tr>
             <tr>
               <td>Task</td>
               <td>60 mins</td>
               <td>2 months ago</td>
-              <td>Finished</td>
+              <td>
+                <Status status="finished"> Finished</Status>
+              </td>
             </tr>
             <tr>
               <td>Task</td>
               <td>60 mins</td>
               <td>2 months ago</td>
-              <td>Finished</td>
+              <td>
+                <Status status="paused"> Paused</Status>
+              </td>
             </tr>
             <tr>
               <td>Task</td>
               <td>60 mins</td>
               <td>2 months ago</td>
-              <td>Finished</td>
+              <td>
+                <Status status="cancelled"> Cancelled</Status>
+              </td>
             </tr>
             <tr>
               <td>Task</td>
               <td>60 mins</td>
               <td>2 months ago</td>
-              <td>Finished</td>
+              <td>
+                <Status status="finished"> Finished</Status>
+              </td>
             </tr>
           </tbody>
         </table>
