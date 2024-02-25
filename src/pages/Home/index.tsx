@@ -1,17 +1,58 @@
-import { Play } from 'phosphor-react'
+import { Play } from "phosphor-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as zod from "zod";
+
 import {
   HomeWrapper,
   FormContainer,
   TimerContainer,
   TaskDescriptionInput,
   TimerDurationInput,
-} from './styles'
-import { Button } from '../../components/Button'
+} from "./styles";
+import { Button } from "../../components/Button";
+
+const newTaskValidationSchema = zod.object({
+  task: zod.string().min(1, "Inform a description"),
+  timeAmountInMins: zod.number().min(1).max(60, 'Task time cycle must be 60 minutes maximum'),
+});
+
+type NewTaskFormData = zod.infer<typeof newTaskValidationSchema>
 
 export default function Home() {
+  /**
+   * function register(name, {opions})
+   * returns { onChange, onBlur, onFocus...}
+   */
+
+  /**
+   * function handleSubmit(function(data))
+   */
+
+  /**
+   * watch(string)
+   * watches for the field change and returns value
+   */
+
+  const { register, handleSubmit, watch, reset } = useForm<NewTaskFormData>({
+    resolver: zodResolver(newTaskValidationSchema),
+    defaultValues:{
+      task: '',
+      timeAmountInMins: 5
+    }
+  });
+
+  function handleCreateNewTask(data: NewTaskFormData) {
+    console.log(data);
+    reset()
+  }
+
+  const task = watch("task");
+  const isSubmitDisabled = !task;
+
   return (
     <HomeWrapper>
-      <form action="">
+      <form onSubmit={handleSubmit(handleCreateNewTask)} action="">
         <FormContainer>
           <label htmlFor="task">I will be working in</label>
           <TaskDescriptionInput
@@ -19,6 +60,7 @@ export default function Home() {
             id="task"
             list="task-suggestions"
             placeholder="fixing bugs"
+            {...register("task")}
           />
 
           <datalist id="task-suggestions">
@@ -31,10 +73,8 @@ export default function Home() {
           <TimerDurationInput
             type="number"
             id="timeAmountInMins"
-            step="5"
             placeholder="00"
-            min={5}
-            max={60}
+            {...register("timeAmountInMins", { valueAsNumber: true })}
           />
           <span>minutes</span>
         </FormContainer>
@@ -47,10 +87,10 @@ export default function Home() {
           <span>0</span>
         </TimerContainer>
 
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitDisabled}>
           <Play size={24} /> Start
         </Button>
       </form>
     </HomeWrapper>
-  )
+  );
 }
