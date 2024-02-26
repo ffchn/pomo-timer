@@ -11,6 +11,7 @@ module.exports = {
     'standard',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'prettier'
   ],
   overrides: [
     {
