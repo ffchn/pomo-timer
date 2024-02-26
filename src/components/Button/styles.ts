@@ -1,6 +1,18 @@
 import styled from 'styled-components'
+import { ButtonProps, ButtonVariants } from './index'
 
-export const ButtonWrapper = styled.button`
+const VARIANT_COLORS = (variant: ButtonVariants) => {
+  switch (variant) {
+    case 'default':
+      return 'green-500'
+    case 'danger':
+      return 'red-500'
+    default:
+      return 'green-500'
+  }
+}
+
+export const ButtonWrapper = styled.button<ButtonProps>`
   width: 100%;
   border: 0;
   padding: 1rem;
@@ -14,7 +26,7 @@ export const ButtonWrapper = styled.button`
   font-weight: bold;
   cursor: pointer;
 
-  background: ${({ theme }) => theme['green-500']};
+  background: ${(props) => props.theme[VARIANT_COLORS(props.variant!)]};
   color: ${({ theme }) => theme['gray-100']};
   transition: 0.5s ease;
 

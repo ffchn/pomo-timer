@@ -1,4 +1,4 @@
-import { Play } from 'phosphor-react'
+import { Pause, Play } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
@@ -28,7 +28,9 @@ interface Task {
   id: string
   task: string
   timeAmountInMins: number
-  startDate: Date
+  startedAt: Date
+  pausedAt?: Date
+  finishedAt?: Date
 }
 
 export default function Home() {
@@ -60,35 +62,6 @@ export default function Home() {
 
   const activeTask = tasks.find((task) => task.id === activeTaskId)
 
-  useEffect(() => {
-    let activeTaskInterval: number
-    if (activeTask) {
-      activeTaskInterval = setInterval(() => {
-        setCycleTimeInSeconds(
-          differenceInSeconds(new Date(), activeTask.startDate)
-        )
-      }, 1000)
-    }
-
-    return () => {
-      clearInterval(activeTaskInterval)
-      setCycleTimeInSeconds(0)
-    }
-  }, [activeTask])
-
-  function handleCreateNewTask(data: NewTaskFormData) {
-    const newTask: Task = {
-      id: String(new Date().getTime()), //creates an unique ID using timestamp
-      task: data.task,
-      timeAmountInMins: data.timeAmountInMins,
-      startDate: new Date(),
-    }
-
-    setTasks((state) => [...state, newTask])
-    setActiveTaskId(newTask.id)
-    reset()
-  }
-
   const task = watch('task')
   const isSubmitDisabled = !task
 
@@ -104,9 +77,64 @@ export default function Home() {
   const seconds = String(timerSeconds).padStart(2, '0') //completes string with 0 until it has 0 characters
 
   useEffect(() => {
+    let activeTaskInterval: number
     if (activeTask) {
-      document.title = `${minutes}:${seconds} | pomo-timer`
+      activeTaskInterval = setInterval(() => {
+        const secondsDiff = differenceInSeconds(
+          new Date(),
+          activeTask.startedAt
+        )
+
+        if (secondsDiff >= taskTimeInSeconds) {
+          setTasks((state) =>
+            state.map((task) => {
+              if (task.id === activeTaskId) {
+                return { ...task, finishedAt: new Date() }
+              } else return task
+            })
+          )
+          return
+        }
+
+        setCycleTimeInSeconds(0)
+      }, 1000)
     }
+
+    return () => {
+      clearInterval(activeTaskInterval)
+      setCycleTimeInSeconds(0)
+    }
+  }, [activeTask])
+
+  function handleCreateNewTask(data: NewTaskFormData) {
+    const newTask: Task = {
+      id: String(new Date().getTime()), //creates an unique ID using timestamp
+      task: data.task,
+      timeAmountInMins: data.timeAmountInMins,
+      startedAt: new Date(),
+    }
+
+    setTasks((state) => [...state, newTask])
+    setActiveTaskId(newTask.id)
+    reset()
+  }
+
+  function handlePauseCycle() {
+    setActiveTaskId(null)
+
+    setTasks((state) =>
+      state.map((task) => {
+        if (task.id === activeTaskId) {
+          return { ...task, pausedAt: new Date() }
+        } else return task
+      })
+    )
+  }
+
+  useEffect(() => {
+    document.title = activeTask
+      ? `${minutes}:${seconds} | pomo-timer`
+      : 'pomo-timer'
   }, [minutes, seconds])
 
   return (
@@ -119,6 +147,7 @@ export default function Home() {
             id="task"
             list="task-suggestions"
             placeholder="fixing bugs"
+            disabled={!!activeTask}
             {...register('task')}
           />
 
@@ -133,6 +162,7 @@ export default function Home() {
             type="number"
             id="timeAmountInMins"
             placeholder="00"
+            disabled={!!activeTask}
             {...register('timeAmountInMins', { valueAsNumber: true })}
           />
           <span>minutes</span>
@@ -146,9 +176,15 @@ export default function Home() {
           <span>{seconds[1]}</span>
         </TimerContainer>
 
-        <Button type="submit" disabled={isSubmitDisabled}>
-          <Play size={24} /> Start
-        </Button>
+        {!activeTask ? (
+          <Button type="submit" disabled={isSubmitDisabled}>
+            <Play size={24} /> Start
+          </Button>
+        ) : (
+          <Button type="button" variant="danger" onClick={handlePauseCycle}>
+            <Pause size={24} /> Pause
+          </Button>
+        )}
       </form>
     </HomeWrapper>
   )
