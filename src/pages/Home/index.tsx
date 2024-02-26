@@ -61,12 +61,18 @@ export default function Home() {
   const activeTask = tasks.find((task) => task.id === activeTaskId)
 
   useEffect(() => {
+    let activeTaskInterval: number
     if (activeTask) {
-      setInterval(() => {
+      activeTaskInterval = setInterval(() => {
         setCycleTimeInSeconds(
           differenceInSeconds(new Date(), activeTask.startDate)
         )
       }, 1000)
+    }
+
+    return () => {
+      clearInterval(activeTaskInterval)
+      setCycleTimeInSeconds(0)
     }
   }, [activeTask])
 
@@ -96,6 +102,12 @@ export default function Home() {
 
   const minutes = String(timerMinutes).padStart(2, '0') //completes string with 0 until it has 0 characters
   const seconds = String(timerSeconds).padStart(2, '0') //completes string with 0 until it has 0 characters
+
+  useEffect(() => {
+    if (activeTask) {
+      document.title = `${minutes}:${seconds} | pomo-timer`
+    }
+  }, [minutes, seconds])
 
   return (
     <HomeWrapper>
