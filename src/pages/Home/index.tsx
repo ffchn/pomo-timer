@@ -2,6 +2,7 @@ import { Play } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
+import { differenceInSeconds } from 'date-fns'
 
 import {
   HomeWrapper,
@@ -11,7 +12,7 @@ import {
   TimerDurationInput,
 } from './styles'
 import { Button } from '../../components/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const newTaskValidationSchema = zod.object({
   task: zod.string().min(1, 'Inform a description'),
@@ -27,6 +28,7 @@ interface Task {
   id: string
   task: string
   timeAmountInMins: number
+  startDate: Date
 }
 
 export default function Home() {
@@ -56,11 +58,24 @@ export default function Home() {
     },
   })
 
+  const activeTask = tasks.find((task) => task.id === activeTaskId)
+
+  useEffect(() => {
+    if (activeTask) {
+      setInterval(() => {
+        setCycleTimeInSeconds(
+          differenceInSeconds(new Date(), activeTask.startDate)
+        )
+      }, 1000)
+    }
+  }, [activeTask])
+
   function handleCreateNewTask(data: NewTaskFormData) {
     const newTask: Task = {
       id: String(new Date().getTime()), //creates an unique ID using timestamp
       task: data.task,
       timeAmountInMins: data.timeAmountInMins,
+      startDate: new Date(),
     }
 
     setTasks((state) => [...state, newTask])
@@ -71,7 +86,6 @@ export default function Home() {
   const task = watch('task')
   const isSubmitDisabled = !task
 
-  const activeTask = tasks.find((task) => task.id === activeTaskId)
   const taskTimeInSeconds = activeTask ? activeTask.timeAmountInMins * 60 : 0
   const currentCycleTimeInSeconds = activeTask
     ? taskTimeInSeconds - cycleTimeInSeconds
